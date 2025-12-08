@@ -13,16 +13,17 @@
 
 char	*get_next_line(int fd)
 {
-	char	*line;
-	int	bytes;
-	char	*buffer;
 	static char	*stash = NULL;
+	int			bytes;
+	char		*line;
+	char		*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
+		return (free(stash), stash = NULL, NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
+	line = NULL;
 	while (!ft_is_newline(stash))
 	{
 		bytes = read(fd, buffer, BUFFER_SIZE);
@@ -32,12 +33,10 @@ char	*get_next_line(int fd)
 		stash = ft_strjoin(stash, buffer);
 	}
 	free(buffer);
-	if (!stash || !*stash)
-		return (NULL);
-	line = ft_strcpy(NULL, stash);
-	stash = ft_clean_stash(stash);
+	buffer = NULL;
+	line = ft_putline(line, stash);
+	ft_clean_stash(&stash);
 	return (line);
-
 }
 
 // #include <stdio.h>
@@ -45,14 +44,38 @@ char	*get_next_line(int fd)
 // int	main()
 // {
 // 	int	fd;
-// 	fd = open("file.txt", O_RDONLY);
+// 	fd = open("read_error.txt", O_RDONLY);
 // 	// printf("fd = %d\n", fd);
 // 	char *line;
 
 // 	while ((line = get_next_line(fd)) != NULL)
 // 	{
 // 		printf("%s", line); // affiche la ligne avec le \n s'il existe
-// 		// free(line);
+// 		free(line);
 // 	}
 // 	close(fd);
+// }
+
+// #include <stdio.h>
+// #include <fcntl.h>
+//   int    main(void)
+// {
+//     char *line;
+//     char *name = "read_error.txt";
+//     int fd = open(name, O_RDONLY);
+//     line = get_next_line(fd);
+//     printf("%s\n", line);
+//     free(line);
+//     line = get_next_line(fd);
+//     printf("%s\n", line);
+//     free(line);
+//     line = get_next_line(10);
+//     printf("%s\n", line);
+//     free(line);
+//     close(fd);
+//     fd = open(name, O_RDONLY);
+//     line = get_next_line(fd);
+//     printf("%s\n", line);
+//     free(line);
+//     return (0);
 // }

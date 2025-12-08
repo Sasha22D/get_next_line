@@ -11,12 +11,12 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-int	ft_strlen(const char *s)
+int	ft_strlen(char *s)
 {
 	int	count;
 
 	count = 0;
-	if (!s)
+	if (!s || !*s)
 		return (0);
 	while (*s)
 	{
@@ -26,12 +26,12 @@ int	ft_strlen(const char *s)
 	return (count);
 }
 
-int	ft_is_newline(const char *s)
+int	ft_is_newline(char *s)
 {
 	int	i;
 
 	i = 0;
-	if (!s)
+	if (!s || !*s)
 		return (0);
 	while (s[i])
 	{
@@ -42,79 +42,83 @@ int	ft_is_newline(const char *s)
 	return (0);
 }
 
-char	*ft_strjoin(char *dest, char *s)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	int	i;
-	int	dst_len;
+	char	*str;
+	char	*p;
+	char	*tmp_s1;
+
+	if (!s2 || !*s2)
+		return (NULL);
+	tmp_s1 = s1;
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	if (!str)
+		return (NULL);
+	p = str;
+	if (s1)
+	{
+		while (*tmp_s1)
+			*p++ = *tmp_s1++;
+	}
+	while (*s2)
+		*p++ = *s2++;
+	*p = '\0';
+	if (s1)
+		free(s1);
+	s1 = NULL;
+	return (str);
+}
+
+char	*ft_putline(char *str, char *stash)
+{
 	char	*new;
+	int		i;
 
 	i = 0;
-	dst_len = ft_strlen(dest);
-
-	new = malloc(dst_len  + ft_strlen(s) + 1);
+	if (!stash)
+		return (NULL);
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	new = malloc(i + (stash[i] == '\n') + 1);
 	if (!new)
 		return (NULL);
-	if (dest != NULL)
+	i = 0;
+	while (stash[i] && stash[i] != '\n')
 	{
-		while (dest[i])
-		{
-			new[i] = dest[i];
-			i++;
-		}
-	}
-	while (*s)
-	{
-		new[i] = *s;
-		s++;
+		new[i] = stash[i];
 		i++;
 	}
+	if (stash[i] == '\n')
+		new[i++] = '\n';
 	new[i] = '\0';
-	free(dest);
+	free(str);
+	str = NULL;
 	return (new);
 }
 
-char	*ft_strcpy(char *dest, const char *src)
+void	ft_clean_stash(char **stash)
 {
-	int	i;
-
-	i = 0;
-	if (!src || !*src)
-		return (NULL);
-	while (src[i] && src[i] != '\n')
-		i++;
-	dest = malloc(i + (src[i] == '\n') + 1);
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (src[i] && src[i] != '\n')
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	if (src[i] == '\n')
-		dest[i++] = '\n';
-	dest[i] = '\0';
-	return (dest);
-}
-
-char	*ft_clean_stash(char *s)
-{
-	int	i;
 	char	*str;
+	char	*new;
+	int		i;
 
 	i = 0;
-	str = NULL;
-	if (!s || !*s)
-		return (NULL);
-	while (s[i] && s[i] != '\n')
+	if (!*stash || !stash)
+		return ;
+	str = *stash;
+	while (str[i] && str[i] != '\n')
 		i++;
-	if (!s[i])
+	if (str[i] == '\n')
+		i++;
+	else
 	{
-		free(s);
-		return (NULL);
+		free(*stash);
+		*stash = NULL;
+		return ;
 	}
-	i++;
-	str = ft_strjoin(str, s + i);
-	free(s);
-	return (str);
+	new = ft_strjoin(NULL, str + i);
+	free(*stash);
+	*stash = new;
+	str = NULL;
+	return ;
 }
