@@ -30,7 +30,7 @@ char	*get_next_line(int fd)
 		if (bytes <= 0)
 			break ;
 		buffer[bytes] = '\0';
-		stash = ft_strjoin(stash, buffer);
+		stash = ft_strjoin_gnl(stash, buffer);
 	}
 	free(buffer);
 	buffer = NULL;
@@ -38,44 +38,3 @@ char	*get_next_line(int fd)
 	ft_clean_stash(&stash);
 	return (line);
 }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-// int	main()
-// {
-// 	int	fd;
-// 	fd = open("read_error.txt", O_RDONLY);
-// 	// printf("fd = %d\n", fd);
-// 	char *line;
-
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line); // affiche la ligne avec le \n s'il existe
-// 		free(line);
-// 	}
-// 	close(fd);
-// }
-
-// #include <stdio.h>
-// #include <fcntl.h>
-//   int    main(void)
-// {
-//     char *line;
-//     char *name = "read_error.txt";
-//     int fd = open(name, O_RDONLY);
-//     line = get_next_line(fd);
-//     printf("%s\n", line);
-//     free(line);
-//     line = get_next_line(fd);
-//     printf("%s\n", line);
-//     free(line);
-//     line = get_next_line(10);
-//     printf("%s\n", line);
-//     free(line);
-//     close(fd);
-//     fd = open(name, O_RDONLY);
-//     line = get_next_line(fd);
-//     printf("%s\n", line);
-//     free(line);
-//     return (0);
-// }

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-int	ft_strlen(char *s)
+int	ft_strlen_gnl(char *s)
 {
 	int	count;
 
@@ -42,7 +42,7 @@ int	ft_is_newline(char *s)
 	return (0);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_gnl(char *s1, char *s2)
 {
 	char	*str;
 	char	*p;
@@ -51,7 +51,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s2 || !*s2)
 		return (NULL);
 	tmp_s1 = s1;
-	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = malloc(ft_strlen_gnl(s1) + ft_strlen_gnl(s2) + 1);
 	if (!str)
 		return (NULL);
 	p = str;
@@ -116,7 +116,7 @@ void	ft_clean_stash(char **stash)
 		*stash = NULL;
 		return ;
 	}
-	new = ft_strjoin(NULL, str + i);
+	new = ft_strjoin_gnl(NULL, str + i);
 	free(*stash);
 	*stash = new;
 	str = NULL;

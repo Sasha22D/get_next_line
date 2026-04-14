@@ -20,8 +20,8 @@
 # include <stdlib.h>
 
 int		ft_is_newline(char *s);
-int		ft_strlen(char *s);
-char	*ft_strjoin(char *s1, char *s2);
+int		ft_strlen_gnl(char *s);
+char	*ft_strjoin_gnl(char *s1, char *s2);
 char	*ft_putline(char *str, char *stash);
 void	ft_clean_stash(char **stash);
 char	*get_next_line(int fd);
